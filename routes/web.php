@@ -15,9 +15,15 @@ use App\Http\Controllers\SeriesController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('/series');
 });
 
-Route::get('/series', [SeriesController::class, 'index']);
-Route::get('/series/criar', [SeriesController::class, 'create']);
-Route::post('/series/salvar', [SeriesController::class, 'store']);
+Route::resource('/series', SeriesController::class);
+/*Route::controller(SeriesController::class)->group(function(){
+    Route::group(['prefix' => '/series'], function(){
+        Route::get('',  'index')->name('series.index');
+        Route::get('/create',  'create')->name('series.create');
+        Route::post('/store',  'store')->name('series.store');
+    });
+});*/
+
