@@ -14,9 +14,7 @@ use App\Http\Controllers\SeriesController;
 |
 */
 
-Route::get('/', function () {
-    return view('/series');
-});
+Route::get('/', [SeriesController::class, 'index']);
 
 Route::resource('/series', SeriesController::class);
 /*Route::controller(SeriesController::class)->group(function(){
@@ -24,6 +22,7 @@ Route::resource('/series', SeriesController::class);
         Route::get('',  'index')->name('series.index');
         Route::get('/create',  'create')->name('series.create');
         Route::post('/store',  'store')->name('series.store');
+        Route::post('/destroy/{serie}', 'destroy')->name('series.destroy');
     });
 });*/
 
