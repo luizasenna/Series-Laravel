@@ -1,4 +1,4 @@
-<x-layout title="Temporadas de {!! $series->nome !!}" :mensagem-sucesso="$mensagemSucesso">
+<x-layout title="Temporadas de {!! $series->nome !!}" >
 
 
     <ul class="list-group">
@@ -9,7 +9,7 @@
                     </a>
 
                 <span class="badge bg-secondary">
-                    {{ $season->episodes->count() }}
+                   {{ $season->numberOfWatchedEpisodes() }} / {{ $season->episodes->count() }}
                 </span>
             </li>
         @endforeach

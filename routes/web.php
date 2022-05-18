@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EpisodesController;
 use App\Http\Controllers\SeasonController;
+use App\Http\Middleware\Autenticador;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SeriesController;
 
@@ -16,9 +17,9 @@ use App\Http\Controllers\SeriesController;
 |
 */
 
-Route::get('/', [SeriesController::class, 'index']);
+Route::get('/', [SeriesController::class, 'index'])->middleware(Autenticador::class);
 
-Route::resource('/series', SeriesController::class);
+
 /*Route::controller(SeriesController::class)->group(function(){
     Route::group(['prefix' => '/series'], function(){
         Route::get('',  'index')->name('series.index');
@@ -28,6 +29,10 @@ Route::resource('/series', SeriesController::class);
     });
 });*/
 
-Route::get('/series/{series}/seasons', [SeasonController::class, 'index'])->name('seasons.index');
-Route::get('seasons/{season}/episodes', [EpisodesController::class, 'index'])->name('episodes.index');
-Route::post('seasons/{season}/episodes', [EpisodesController::class, 'update'])->name('episodes.update');
+Auth::routes();
+Route::resource('/series', SeriesController::class);
+Route::middleware('autenticador')->group(function(){
+    Route::get('/series/{series}/seasons', [SeasonController::class, 'index'])->name('seasons.index');
+    Route::get('seasons/{season}/episodes', [EpisodesController::class, 'index'])->name('episodes.index');
+    Route::post('seasons/{season}/episodes', [EpisodesController::class, 'update'])->name('episodes.update');
+});
