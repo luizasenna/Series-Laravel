@@ -36,3 +36,12 @@ Route::middleware('autenticador')->group(function(){
     Route::get('seasons/{season}/episodes', [EpisodesController::class, 'index'])->name('episodes.index');
     Route::post('seasons/{season}/episodes', [EpisodesController::class, 'update'])->name('episodes.update');
 });
+
+Route::get('/email', function () {
+   return new \App\Mail\SeriesCreated(
+       'Serie de Teste',
+       10,
+       3,
+       6
+   );
+});
