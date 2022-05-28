@@ -37,22 +37,16 @@ class SeriesController extends Controller
     public function store(SeriesFormRequest $request, EloquentSeriesRepository $repository)
     {
 
+        $coverPath = $request->file('cover')->store('series_cover', 'public');
+        $request->coverPath = $coverPath;
         $serie = $this->repository->add($request);
 
-
-        $usuarios = User::all();
-        foreach($usuarios as $index => $usuario) {
-            $email = new SeriesCreated(
-                $serie->nome,
-                $serie->id,
-                $request->seasonsQtty,
-                $request->episodesPerSeason,
-            );
-
-            $when = now()->addSeconds($index * 5);
-            Mail::to($usuario)->later($when, $email);
-        }
-
+         \App\Events\SeriesCreated::dispatch(
+            $serie->nome,
+            $serie->id,
+            $request->seasonsQtty,
+            $request->episodesPerSeason,
+        );
 
         return to_route('series.index')->with('mensagem.sucesso' , "Série '{$serie->nome}' adicionada com sucesso");
 
